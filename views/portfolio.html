@@ -1,0 +1,29 @@
+<section id="form" ng-controller="portfolioController">
+    <header class="section_header">
+        <h1 class="align_center">Add stock to portfolio</h1>
+    </header>
+    <article id="form_contents">
+        <form  ng-submit="submit()">
+            <input type="text" ng-model="stock.name" name="stock.name" />
+            <input type="submit" name="stock.name" value="Submit" />
+        </form>
+    </article>
+    <article id="portfolio">
+        <code>stocks={{stocks}}</code>
+        <table>
+            <caption>
+                <p>Portfolio</p>
+            </caption>
+            <thead>
+                <tr><th>Symbol</th><th>Price</th><th>Last lookup time</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(index, stock) in stocks | orderBy:order_by">
+                    <td>{{ stock.name }}</td>
+                    <td>{{ stock.price }}</td>
+                    <td>Never</td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+</section>
