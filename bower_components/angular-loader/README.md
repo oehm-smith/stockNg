@@ -1,6 +1,33 @@
+# bower-angular-loader
+
+This repo is for distribution on `bower`. The source for `angular-loader` is in the
+[main AngularJS repo](https://github.com/angular/angular.js/blob/master/src/loader.js).
+Please file issues and pull requests against that repo.
+
+## Install
+
+Install with `bower`:
+
+```shell
+bower install angular-loader
+```
+
+Add a `<script>` to your `index.html`:
+
+```html
+<script src="/bower_components/angular-loader/angular-loader.js"></script>
+```
+
+## Documentation
+
+Documentation is available on the
+[AngularJS docs site](http://docs.angularjs.org/guide/bootstrap).
+
+## License
+
 The MIT License
 
-Copyright (c) 2010-2014 Google, Inc. http://angularjs.org
+Copyright (c) 2010-2012 Google, Inc. http://angularjs.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,4 +46,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-

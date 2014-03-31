@@ -1,0 +1,15 @@
+{
+  "name": "StockNG",
+  "description": "A stock management web app written in AngularJS",
+  "version": "0.0.0",
+  "homepage": "https://github.com/oehm-smith/stockNg",
+  "license": "EPL",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.15",
+    "angular-resource": "1.2.x"
+  }
+}
