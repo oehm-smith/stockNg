@@ -2,7 +2,7 @@ body {
   margin: 15px auto;
   font-family: Arial, "MS Trebuchet", sans-serif;
   width: 960px;
-  background: #AABFAA url('../images/nasdaq1978s.png') no-repeat bottom left;
+  background: #AABFAA url('../img/nasdaq1978s.png') no-repeat bottom left;
   background-size: 100% 100%;
   -webkit-filter: contrast(100%);
 }

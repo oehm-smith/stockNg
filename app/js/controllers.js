@@ -2,10 +2,31 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', [])
-  .controller('MyCtrl1', [function() {
+var stockNgControllers = angular.module('stockNg.controllers', []);
 
-  }])
-  .controller('MyCtrl2', [function() {
+stockNgControllers.controller('portfolioController', [
+    '$scope', 
+    function($scope) {
 
-  }]);
+      $scope.stock = {
+        name: null
+      };
+
+      $scope.stocks = [];
+      $scope.order_by = "name";
+
+      $scope.submit = function() {
+        if ($scope.stock.name) {
+          $scope.stocks.push({name: $scope.stock.name});
+          $scope.stock.name = '';
+        }
+      };
+    }
+]);
+
+stockNgControllers.controller('mainController', [
+    '$scope', 
+    function($scope) {
+        $scope.name="Ted";
+    }
+]);

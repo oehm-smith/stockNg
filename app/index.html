@@ -1,12 +1,8 @@
 <!DOCTYPE html>
  <html>
  <head>
-   <title>Portfolio</title>
-   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
-   <script src="js/angular-route/angular-route.js"></script>
-   <script src="js/app.js"></script>
-   <script src="js/controllers.js"></script>
-   <link rel="stylesheet" href="stylesheets/app.css"></link>
+    <title>StockNg</title>
+    <link rel="stylesheet" href="css/app.css">
  </head>
  <body ng-app="stockNgApp">
     <div id="wrapper">
@@ -23,12 +19,19 @@
                 <li><a href="#">Market Trends</a></li>
             </ul>
         </section>
-        <div class="template_content">
-            <div ng-view></div>
+        <div class="template_content view-container">
+            <div ng-view class="view-frame"></div>
         </div>
         <footer id="page_footer">
             <p>Copyright 2014 brooke@tintuna.com</p>
         </footer>
     </div>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
  </body>
  </html>
