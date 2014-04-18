@@ -19,9 +19,9 @@
             </thead>
             <tbody>
                 <tr ng-repeat="(index, stock) in stocks | orderBy:order_by">
-                    <td>{{ stock.name }}</td>
-                    <td>{{ stock.price }}</td>
-                    <td>Never</td>
+                    <td>{{ stock.getName() }}</td>
+                    <td>{{ stock.getValue() }}</td>
+                    <td>{{ stock.getLastDate() }}</td>
                 </tr>
             </tbody>
         </table>

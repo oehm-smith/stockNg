@@ -4,25 +4,26 @@
 
 var stockNgControllers = angular.module('stockNg.controllers', []);
 
-stockNgControllers.controller('portfolioController', [
-    '$scope', 
-    function($scope) {
+stockNgControllers.controller('portfolioController', 
+    function($scope, portfolioService) {
 
       $scope.stock = {
         name: null
       };
 
-      $scope.stocks = [];
+      //$scope.stocks = [];
+      $scope.stocks = portfolioService.getStockList();
       $scope.order_by = "name";
 
       $scope.submit = function() {
         if ($scope.stock.name) {
-          $scope.stocks.push({name: $scope.stock.name});
-          $scope.stock.name = '';
+            portfolioService.addStock($scope.stock.name);
+          //$scope.stocks.push({name: $scope.stock.name});
+            $scope.stock.name = '';
         }
       };
     }
-]);
+);
 
 stockNgControllers.controller('mainController', [
     '$scope', 
