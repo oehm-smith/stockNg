@@ -28,12 +28,6 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
                     newStock.setValue(data.data.Close);
                     newStock.setLastDate(data.dateCreated);
                 });
-            /*slsPromise.success(function(data, status, headers, config) {
-                console.log("Lookup success in AddStock - data: ", data);
-            });
-            lookupPromise.error(function(data, status, headers, config) {
-                console.log("Lookup failure in AddStock - status: ", status, ", data: ", data);
-            });*/
         };
         
         return {
@@ -44,35 +38,12 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
     });
 
 stockNgServices.factory('stockLookupService', function($http, $q, utilityService) {
-
-/*var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';
-            var query = 'select * from yahoo.finance.historicaldata where symbol = "' + symbol + '" and startDate = "' + start + '" and endDate = "' + end + '"';
-            var url = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(query) + format;*/
-
     var urlBase = "http://query.yahooapis.com/v1/public/yql?q=";
     var queryTemplate = 'select * from yahoo.finance.historicaldata where symbol = "%symbol%" and startDate = "%startDate%" and endDate = "%endDate%"';
     var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';
     var exchange = "AX";
-    //var symbolArg="s";
     
     var lookup = function(stockObj) {
-        //var lookupUrl=urlBase+"&"+symbolArg+"="+stockObj.getName()+"."+exchange;
-        /*var lookupUrl = "http://mhnystatic.s3.amazonaws.com/angulartest/list.html";
-        console.log("Lookup symbol: ", stockObj.getName(), "Lookup url: "+lookupUrl);
-        var lookupPromise = $http({
-            method: "GET",
-            url: lookupUrl,
-            headers: {
-                "Accept":"" star slash star
-            }
-        });
-        lookupPromise.success(function(data, status, headers, config) {
-            console.log("Lookup success - data: ", data);
-        });
-        lookupPromise.error(function(data, status, headers, config) {
-            console.log("Lookup failure - status: ", status, ", data: ", data);
-        });
-        */
         var symbol=stockObj.getName()+"."+exchange;
         // Dates - need to be in the form '2014-04-12T07:08:04Z'
         var endDate = Date.today();
@@ -85,14 +56,8 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
         var deferred = $q.defer();
         //return;// deferred.promise;
         
-        // /var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';
-// REVERT THIS REVERT THIS REVERT THIS REVERT THIS REVERT THIS REVERT THIS REVERT THIS 
         var query = utilityService.template(queryTemplate,{symbol:symbol, startDate:startDateF, endDate:endDateF});
-        //var query = 'select * from yahoo.finance.historicaldata where symbol = "'+symbol+'" and startDate = "'+startDateF+'" and endDate = "'+endDateF'"';
-        //var query = 'select * from yahoo.finance.historicaldata where symbol = "CBA.AX" and startDate = "2014-04-12T07:08:04Z" and endDate = "2014-04-19T07:08:04Z"';
 
-        //.'select * from yahoo.finance.historicaldata where symbol = "' + symbol + '" and startDate = "' + startF + '" and endDate = "' + endF + '"';
-        //var url = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(query) + format;
         var urlNoEncode = urlBase + query + format;
         var urlEncode = urlBase + encodeURIComponent(query) + format;
 
