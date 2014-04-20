@@ -27,6 +27,9 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
                     newStock.setName(data.data.Symbol);
                     newStock.setValue(data.data.Close);
                     newStock.setLastDate(data.dateCreated);
+                }, function(data) {
+                    console.log("Lookup failure in AddStock - data: ", data);
+                    newStock.setName(" - AINT EXIST");
                 });
         };
         
