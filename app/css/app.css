@@ -33,7 +33,6 @@ h1 {margin: 0 auto;}
 #page_header {
     padding: 3px 10px;
     margin: 15px auto;
-    font-size: 1.5em;
     clear: both;
 }
     
@@ -70,30 +69,35 @@ h1 {margin: 0 auto;}
     width: 98%;
 }
 
-#page_navigation {
+.page_navigation {
     margin: 15px auto;
     width: 98%;
     display: inline-block;
-    border-bottom-color: #DDDDDD;
+    border-bottom-color: #DDD;
     border-bottom-style: groove;
     border-bottom-width: 4px;
-    border-top-color: #DDDDDD;
+    border-top-color: #DDD;
     border-top-style: groove;
     border-top-width: 4px;
 }
 
-#page_navigation ul {
+.site_navigation {
+    border-bottom-style: none;
+    border-top-style: none;
+}
+
+.page_navigation ul {
     width: 100%;
     -webkit-margin-before: 0px;
 }
 
-#page_navigation ul li {
+.page_navigation ul li {
     display: inline-block;
     float: left;
     width: 10%;
 }
 
-#page_navigation ul li a {
+.page_navigation ul li a {
     height: 1px;
     line-height: 1px;
     text-transform: capitalize;
@@ -143,4 +147,17 @@ caption {
     color: #AA0066;
     font-weight: bold;
     padding-bottom: 4px;
+}
+
+/* ***** Header ***** */
+#page_header > nav > ul, #page_footer > nav > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#page_header > nav > ul > li, #page_footer > nav > ul > li {
+    margin: 0 20px 0 0;
+    padding: 0;
+    display: inline;
 }
