@@ -8,7 +8,6 @@ console.log("stock obj file");
 var stock=function(spec) {
     var that={};
     var me = {};
-    console.log("construct stock: ");
     setupObject(spec);
     
     that.getName=function() {

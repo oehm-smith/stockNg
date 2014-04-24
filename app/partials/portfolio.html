@@ -14,11 +14,11 @@
                 <p>Portfolio</p>
             </caption>
             <thead>
-                <tr><th>Symbol</th><th>Price</th><th>Last lookup time</th></tr>
+                <tr><th ng-click="fader();">Symbol</th><th>Price</th><th>Last lookup time</th></tr>
             </thead>
             <tbody>
-                <tr ng-repeat="(index, stock) in stocks | orderBy:order_by">
-                    <td>{{ stock.getName() }}</td>
+                <tr class="portfolioRow" ng-repeat="(index, stock) in stocks | orderBy:order_by" id="{{rowPrefix}}{{index}}">
+                    <td ng-click="fader();">{{ stock.getName() }}</td>
                     <td>{{ stock.getValue() }}</td>
                     <td>{{ stock.getLastDate() }}</td>
                 </tr>

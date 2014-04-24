@@ -14,3 +14,17 @@ module.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/'});
 }]);
 
+var fader1 = function() {
+    console.log("fader");
+    $("#portfolio").fadeOut('slow');
+};
+
+$("h1").click(function() {
+    console.log("clicked it");
+    fader();
+});
+
+$(".portfolioRow").click(function() {
+    console.log("clicked tr");
+    fader();
+});

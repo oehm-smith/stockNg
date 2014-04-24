@@ -18,9 +18,12 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
         var setStockList = function(newStocks) {
             stocks = newStocks;
         };
+        // returns a promise
         var addStock = function(stockSymbol) {
+            //var deferred = $q.defer();
+
             var newStock = stock({name:stockSymbol});
-            stocks.push(newStock);
+            var index = stocks.push(newStock);
             stockLookupService.lookup(newStock)
                 .then(function(data) {
                     console.log("Lookup success in AddStock - data: ", data);
@@ -28,15 +31,21 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
                     newStock.setValue(data.data.Close);
                     newStock.setLastDate(data.dateCreated);
                 }, function(data) {
+                    var name = newStock.getName();
                     console.log("Lookup failure in AddStock - data: ", data);
-                    newStock.setName(" - AINT EXIST");
+                    newStock.setName(name + " not listed (index:"+index+")");
                 });
         };
-        
+        var removeEntry = function(index) {
+            console.log("Remove entry: ", index);
+            stocks.splice(index,1);
+        };
         return {
             getStockList: getStockList,
             setStockList: setStockList,
-            addStock: addStock
+            addStock: addStock,
+            removeEntry: removeEntry,
+            stocks: stocks
         };
     });
 
@@ -50,7 +59,7 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
         var symbol=stockObj.getName()+"."+exchange;
         // Dates - need to be in the form '2014-04-12T07:08:04Z'
         var endDate = Date.today();
-            // take 7 days to make sure I get the last market close day (ie. there might be a string of public holidays)
+            // take 7 days to make sure I get the last market close day (ie. there might be a group of consecutive of public holidays)
         var startDate=Date.today().add(-7).days();
         var endDateF = endDate.toString("yyyy-MM-ddTHH:mm:ssZ");
         var startDateF = startDate.toString("yyyy-MM-ddTHH:mm:ssZ");
@@ -72,7 +81,8 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
         lookupPromise.success(function(data, status, headers, config) {
             console.log("Lookup success - count: ", data.query.count, ", data: ", data);
             if (data.query.count == 0) {
-                deferred.reject("Lookup failure - unknown stock symbol '?'");//"+symbol+"');
+                var msg = 
+                deferred.reject("Lookup failure - unknown stock symbol '"+symbol+"'");
             } else {
                 deferred.resolve({dateCreated:data.query.created, data:data.query.results.quote[0]});
             }
