@@ -29,7 +29,7 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
                     console.log("Lookup success in AddStock - data: ", data);
                     newStock.setName(data.data.Symbol);
                     newStock.setValue(data.data.Close);
-                    newStock.setLastDate(data.dateCreated);
+                    newStock.setLastDate(data.dateCreated.format("DD/MM/YYYY HH:mm Z"));
                 }, function(data) {
                     var name = newStock.getName();
                     console.log("Lookup failure in AddStock - data: ", data);
@@ -54,19 +54,24 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
     var queryTemplate = 'select * from yahoo.finance.historicaldata where symbol = "%symbol%" and startDate = "%startDate%" and endDate = "%endDate%"';
     var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';
     var exchange = "AX";
+    var dateFormatStr = "YYYY-MM-DD[T]HH:mm:ssZ"
     
     var lookup = function(stockObj) {
         var symbol=stockObj.getName()+"."+exchange;
         // Dates - need to be in the form '2014-04-12T07:08:04Z'
-        var endDate = Date.today();
+        //var endDate = Date.today();
+        //endDate.setTimeToNow();
             // take 7 days to make sure I get the last market close day (ie. there might be a group of consecutive of public holidays)
-        var startDate=Date.today().add(-7).days();
-        var endDateF = endDate.toString("yyyy-MM-ddTHH:mm:ssZ");
-        var startDateF = startDate.toString("yyyy-MM-ddTHH:mm:ssZ");
+        //var startDate=Date.today();
+        //startDate.setTimeToNow();
+        //startDate.addDays(-7);
+        var endDate = moment();
+        var startDate = moment().add('days',-7);
+        var endDateF = endDate.format(dateFormatStr);
+        var startDateF = startDate.format(dateFormatStr);
         console.log("Start date: ",startDateF,", end date: ", endDateF);
         
         var deferred = $q.defer();
-        //return;// deferred.promise;
         
         var query = utilityService.template(queryTemplate,{symbol:symbol, startDate:startDateF, endDate:endDateF});
 
@@ -81,10 +86,11 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
         lookupPromise.success(function(data, status, headers, config) {
             console.log("Lookup success - count: ", data.query.count, ", data: ", data);
             if (data.query.count == 0) {
-                var msg = 
                 deferred.reject("Lookup failure - unknown stock symbol '"+symbol+"'");
             } else {
-                deferred.resolve({dateCreated:data.query.created, data:data.query.results.quote[0]});
+                var theDate = moment(data.query.created,dateFormatStr);
+                console.log("Parsed date:",theDate);
+                deferred.resolve({dateCreated:theDate, data:data.query.results.quote[0]});
             }
         });
         lookupPromise.error(function(data, status, headers, config) {
