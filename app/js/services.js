@@ -9,7 +9,7 @@ var stockNgServices = angular.module('stockNg.services', []);
 stockNgServices.value('version', '0.1');
 
 
-stockNgServices.factory('portfolioService', function(stockLookupService) {
+stockNgServices.factory('portfolioService', function($q, stockLookupService) {
         var stocks = [];
                 
         var getStockList = function() {
@@ -20,21 +20,25 @@ stockNgServices.factory('portfolioService', function(stockLookupService) {
         };
         // returns a promise
         var addStock = function(stockSymbol) {
-            //var deferred = $q.defer();
+            var deferred = $q.defer();
 
             var newStock = stock({name:stockSymbol});
             var index = stocks.push(newStock);
+            index--;    // since push returns the new length
             stockLookupService.lookup(newStock)
                 .then(function(data) {
                     console.log("Lookup success in AddStock - data: ", data);
                     newStock.setName(data.data.Symbol);
                     newStock.setValue(data.data.Close);
                     newStock.setLastDate(data.dateCreated.format("DD/MM/YYYY HH:mm Z"));
+                    deferred.resolve({index:index});
                 }, function(data) {
                     var name = newStock.getName();
                     console.log("Lookup failure in AddStock - data: ", data);
                     newStock.setName(name + " not listed (index:"+index+")");
+                    deferred.reject({index:index});
                 });
+            return deferred.promise;
         };
         var removeEntry = function(index) {
             console.log("Remove entry: ", index);
@@ -89,7 +93,6 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
                 deferred.reject("Lookup failure - unknown stock symbol '"+symbol+"'");
             } else {
                 var theDate = moment(data.query.created,dateFormatStr);
-                console.log("Parsed date:",theDate);
                 deferred.resolve({dateCreated:theDate, data:data.query.results.quote[0]});
             }
         });

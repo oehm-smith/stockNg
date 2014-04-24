@@ -24,29 +24,45 @@ stockNgControllers.controller('portfolioController',
 
         $scope.submit = function() {
             if ($scope.stock.name) {
-                $scope.portfolioService.addStock($scope.stock.name);
+                $scope.portfolioService.addStock($scope.stock.name)
+                    .then(function success(data) {
+                            console.log("Submit success at index:"+data.index);
+                        },
+                        function error(data) {
+                            cancelEntry(data.index);
+                        }
+                    );
                 //console.log("Stocks now after push:",$scope.stocks);                
                 
                 $scope.stock.name = '';
             }
         }
 
-        $scope.fader = function() {
-            var that = this;
-            var id = "#"+$scope.rowPrefix+this.index;
+        // When an unknown entry (ie. not listed on the exchange) this is called to
+        // gracefully remove the row from the portfolio table
+        var cancelEntry = function(index) {
+            console.log("cancelEntry - index: "+index);
+            fadeRow(index);
+        };
+                
+        var fadeRow = function(index) {
+            var id = "#"+$scope.rowPrefix+index;
             console.log("fader - id: '"+id+"'");
-            console.log("this:",this);
             $(id).css("color","#F44");
             $(id).fadeTo(2000, 0.0, function(animation,jumpedToEnd) {
-                $scope.portfolioService.removeEntry(that.index);
-                //$scope.stocks.splice(that.index,1);
+                $scope.portfolioService.removeEntry(index);
 
                 console.log("Stocks is now: ", $scope.stocks);
                 // Force a $digest refresh as fadeTo() is a JQuery function so Angular is not aware of the data change
                 $scope.$apply();    
             });
-            
         };
+        
+        $scope.fader = function() {
+            var that = this;
+            fadeRow(this.index);
+        };
+
     }
 );
 
