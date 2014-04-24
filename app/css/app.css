@@ -3,7 +3,7 @@ body {
   font-family: Arial, "MS Trebuchet", sans-serif;
   font-size: 1.2em;
   width: 960px;
-  background: #AABFAA url('../img/nasdaq1978s.png') no-repeat bottom left;
+  background: #FFF url('../img/nasdaq1978s.png') no-repeat bottom left;
   background-size: 100% 100%;
 }
 
@@ -94,7 +94,7 @@ h1 {margin: 0 auto;}
 .page_navigation ul li {
     display: inline-block;
     float: left;
-    width: 10%;
+    width: 15%;
 }
 
 .page_navigation ul li a {
@@ -164,6 +164,7 @@ caption {
 
 /********/
 
+.stockNameError {color:#DA70D6;}
 /*.ng-pristine { border:1px solid Gold; }
 .ng-dirty.ng-valid { border:1px solid Green; }
 .ng-dirty.ng-valid ~ span.ok { color:green; display:inline; } */

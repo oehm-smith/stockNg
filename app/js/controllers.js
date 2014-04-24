@@ -13,12 +13,7 @@ stockNgControllers.controller('portfolioController',
 
         $scope.portfolioService = portfolioService;
         
-        //$scope.stocks = new Array();//[];//X
         $scope.stocks = $scope.portfolioService.getStockList();    // portfolioService.stocks
-        /*$scope.$watch(portfolioService.getStockList(), function ( stockList ) {
-            console.log("Stock list changed: ", $scope.stocks);
-            $scope.stocks = stockList;
-        });*/
 
         $scope.order_by = "name";
 
@@ -31,9 +26,7 @@ stockNgControllers.controller('portfolioController',
                         function error(stock) {
                             cancelEntry(stock);
                         }
-                    );
-                //console.log("Stocks now after push:",$scope.stocks);                
-                
+                    );                
                 $scope.stock.name = '';
             }
         }
@@ -48,12 +41,12 @@ stockNgControllers.controller('portfolioController',
         var fadeRow = function(stock) {
             var id = "#"+$scope.rowPrefix+stock.getName();
             console.log("fader - id: '"+id+"'");
-            $(id).css("color","#F44");
-            $(id).fadeTo(5000, 0.0, function(animation,jumpedToEnd) {
+            $(id).addClass("stockNameError");
+            $(id).fadeTo(4000, 0.0, function(animation,jumpedToEnd) {
                 $scope.portfolioService.removeEntry(stock);
 
                 console.log("Stocks is now: ", $scope.stocks);
-                // Force a $digest refresh as fadeTo() is a JQuery function so Angular is not aware of the data change
+                // Force a $digest refresh; Necessary as fadeTo() is a JQuery function so Angular is not aware of the data change
                 $scope.$apply();    
             });
         };
