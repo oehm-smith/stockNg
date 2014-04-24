@@ -10,7 +10,7 @@ stockNgServices.value('version', '0.1');
 
 
 stockNgServices.factory('portfolioService', function($q, stockLookupService) {
-        var stocks = [];
+        var stocks = {};
                 
         var getStockList = function() {
             return stocks;
@@ -23,33 +23,35 @@ stockNgServices.factory('portfolioService', function($q, stockLookupService) {
             var deferred = $q.defer();
 
             var newStock = stock({name:stockSymbol});
-            var index = stocks.push(newStock);
-            index--;    // since push returns the new length
+            //  x var index = stocks.push(newStock);
+            //  x index--;    // since push returns the new length
+            stocks[stockSymbol] = newStock;
+            console.log("Added to stocks:",stocks);
             stockLookupService.lookup(newStock)
                 .then(function(data) {
                     console.log("Lookup success in AddStock - data: ", data);
                     newStock.setName(data.data.Symbol);
                     newStock.setValue(data.data.Close);
                     newStock.setLastDate(data.dateCreated.format("DD/MM/YYYY HH:mm Z"));
-                    deferred.resolve({index:index});
-                }, function(data) {
-                    var name = newStock.getName();
+                    deferred.resolve(newStock);
+                }, function error(data) {
+                    var name = data.stock.getName();
                     console.log("Lookup failure in AddStock - data: ", data);
-                    newStock.setName(name + " not listed (index:"+index+")");
-                    deferred.reject({index:index});
+                    //newStock.setName(name + " not listed (stock:"+name+")");
+                    deferred.reject(newStock);
                 });
             return deferred.promise;
         };
-        var removeEntry = function(index) {
-            console.log("Remove entry: ", index);
-            stocks.splice(index,1);
+        var removeEntry = function(stock) {
+            console.log("Remove entry: ", stock.getName());
+            //stocks.splice(index,1);
+            delete stocks[stock.getName()];
         };
         return {
             getStockList: getStockList,
             setStockList: setStockList,
             addStock: addStock,
             removeEntry: removeEntry,
-            stocks: stocks
         };
     });
 
@@ -90,7 +92,7 @@ stockNgServices.factory('stockLookupService', function($http, $q, utilityService
         lookupPromise.success(function(data, status, headers, config) {
             console.log("Lookup success - count: ", data.query.count, ", data: ", data);
             if (data.query.count == 0) {
-                deferred.reject("Lookup failure - unknown stock symbol '"+symbol+"'");
+                deferred.reject({msg:"Lookup failure - unknown stock symbol '"+symbol+"'", stock:stockObj});
             } else {
                 var theDate = moment(data.query.created,dateFormatStr);
                 deferred.resolve({dateCreated:theDate, data:data.query.results.quote[0]});

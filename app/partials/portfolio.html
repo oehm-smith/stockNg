@@ -3,9 +3,10 @@
         <h1 class="align_center">Add stock to portfolio</h1>
     </header>
     <article id="form_contents">
-        <form  ng-submit="submit()">
-            <input type="text" ng-model="stock.name" name="stock.name" />
+        <form name="portfolioForm" ng-submit="submit();" novalidate>
+            <input type="text" ng-model="stock.name" name="stockName" ng-pattern="/^[a-zA-Z]*$/" />
             <input type="submit" name="stock.name" value="Submit" />
+            <span ng-show="portfolioForm.stockName.$error.pattern" class="custom-error">Input: letters only</span>
         </form>
     </article>
     <article id="portfolio">

@@ -25,11 +25,11 @@ stockNgControllers.controller('portfolioController',
         $scope.submit = function() {
             if ($scope.stock.name) {
                 $scope.portfolioService.addStock($scope.stock.name)
-                    .then(function success(data) {
-                            console.log("Submit success at index:"+data.index);
+                    .then(function success(stock) {
+                            console.log("Submit success at index:"+stock.getName());
                         },
-                        function error(data) {
-                            cancelEntry(data.index);
+                        function error(stock) {
+                            cancelEntry(stock);
                         }
                     );
                 //console.log("Stocks now after push:",$scope.stocks);                
@@ -40,17 +40,17 @@ stockNgControllers.controller('portfolioController',
 
         // When an unknown entry (ie. not listed on the exchange) this is called to
         // gracefully remove the row from the portfolio table
-        var cancelEntry = function(index) {
-            console.log("cancelEntry - index: "+index);
-            fadeRow(index);
+        var cancelEntry = function(stock) {
+            console.log("cancelEntry - stock: "+stock.getName());
+            fadeRow(stock);
         };
                 
-        var fadeRow = function(index) {
-            var id = "#"+$scope.rowPrefix+index;
+        var fadeRow = function(stock) {
+            var id = "#"+$scope.rowPrefix+stock.getName();
             console.log("fader - id: '"+id+"'");
             $(id).css("color","#F44");
-            $(id).fadeTo(2000, 0.0, function(animation,jumpedToEnd) {
-                $scope.portfolioService.removeEntry(index);
+            $(id).fadeTo(5000, 0.0, function(animation,jumpedToEnd) {
+                $scope.portfolioService.removeEntry(stock);
 
                 console.log("Stocks is now: ", $scope.stocks);
                 // Force a $digest refresh as fadeTo() is a JQuery function so Angular is not aware of the data change
